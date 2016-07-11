@@ -1,26 +1,27 @@
 package server
 
 import (
+	"os"
+	"github.com/joho/godotenv"
 	"github.com/gin-gonic/gin"
 )
 
+func StartServer() {
 
-func StartServer(){
+    godotenv.Load()
 
-    gin.SetMode(gin.ReleaseMode)
+	gin.SetMode(gin.ReleaseMode)
 
 	s := gin.New()
 	//set middleware rate limit
-    s.Use(rateLimit, gin.Recovery())
+	s.Use(rateLimit, gin.Recovery())
 
 	s.GET("/", index)
-	//start server 
-	s.Run(":8090")
+	
+	//start server
+	s.Run(os.Getenv("PORT"))
 }
-
 
 func index(c *gin.Context) {
 	c.String(200, "api gateway is running")
 }
-
-
